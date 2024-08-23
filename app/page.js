@@ -11,13 +11,8 @@ export default function Home() {
   const [inventory, setInventory] = useState([])
   const [item, setItem] = useState("")
 
-
-
   const [qItem, setSearchItem] = useState("")
   const [searchOpen, setSearchOpen] = useState(false)
-
-
-
   const [open, setOpen] = useState(false)
 
   const updateInventory = async () => {
@@ -30,7 +25,6 @@ export default function Home() {
     setInventory(inventoryList)
     console.log(inventoryList)
   }
-
 
   const removeItem = async (item) => {
     const docRef = doc(collection(db,'inventory'),item)
@@ -63,22 +57,18 @@ export default function Home() {
       await updateInventory()
     }
 
-    const searchItem = async (item) => {
-      console.log("Searching for:", item);
-      // Query by document ID directly
-      const foundItem = inventory.find(doc => doc.id === item);
-      if (foundItem) {
-        console.log("Found:", item);
-        await setSearchItem(foundItem)
-        handleSearchOpen()
-      } else {
-        alert("No item found");
-      }
+  const searchItem = async (item) => {
+    console.log("Searching for:", item);
+    // Query by document ID directly
+    const foundItem = inventory.find(doc => doc.id === item);
+    if (foundItem) {
+      console.log("Found:", item);
+      setSearchItem(foundItem)
+      handleSearchOpen()
+    } else {
+      alert("No item found");
     }
-
-
-
-
+  }
 
   useEffect(() => {
     updateInventory()
@@ -107,13 +97,11 @@ export default function Home() {
   }
   
   return(
-
     <Container>
         <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
           <Typography variant="h1" sx={{textAlign: "center"}}>Pantry Tracker</Typography>
         </Box>
           
-
         <TextField label="Search Item" value={item} onChange={(e) => setItem(e.target.value)} />
         <Button variant="contained" 
         onClick={() => {
@@ -132,15 +120,12 @@ export default function Home() {
                 if (updatedItem) {
                   setSearchItem(updatedItem);
                 } else {
+                  setSearchItem(""); // Reset qItem if not found
                   handleSearchClose();
                 }
               }}>Remove</Button>
             </Box>
           </Modal>
-
-
-
-
 
           <Button variant="contained" onClick={handleOpen}>Add Item</Button>
           <Modal open={open} onClose={handleClose}>
@@ -148,9 +133,6 @@ export default function Home() {
                 <Typography variant="h2" sx ={{color: "black"}}>Add Item</Typography>
               </Box>
             </Modal>
-
-
-
 
             <Modal open={open} onClose={handleClose}>
               <Box position="absolute" color="white" bgcolor="white" p={4} borderRadius={4} sx={{top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
